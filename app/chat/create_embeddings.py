@@ -3,7 +3,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 import sys
 import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
+from app.chat.vector_stores.pinecone import vector_store
 def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
@@ -12,7 +12,7 @@ def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
 
     loader = PyPDFLoader(pdf_path)
     docs = loader.load_and_split(text_splitter)
-    print(docs)
+    vector_store.add_documents(docs)
 
     
 
